@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <title>Q-Vocab</title>
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+  <link rel="icon" href="/assets/target.ico">
+  <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+</head>
+<body class="">
+  <main data-component="content" class="content">
+    <%= yield %>
+  </main>
+  <!-- <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom is-loading hidden"></i> -->
+</body>
+</html>
+<%= javascript_include_tag 'application' %>
+
+<script type="text/javascript">
+  $(function() {
+    <% if current_user %>
+    Qvocab.currentUser = {
+      email: '<%= current_user.email %>',
+      isActive: true,
+      id: '<%= current_user.id %>',
+      isAdmin: <%= current_user.admin? %>
+    };
+    <% else %>
+    Qvocab.currentUser = {
+      id: -1,
+      isActive: false
+    };
+    <% end %>
+  
+    Qvocab.events.trigger('appLoaded');
+  });
+</script>

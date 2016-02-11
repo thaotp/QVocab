@@ -1,0 +1,34 @@
+/*
+ * Some global variables that need to be present before
+ * other things are initialized.
+ */
+// Setup the global Qvocab object
+var Qvocab = {};
+var routeStore = [];
+Qvocab.appLoaded = false;
+
+Qvocab.Collections = {};
+Qvocab.Controllers = {};
+Qvocab.Flash = {};
+Qvocab.Globals = {};
+Qvocab.Helpers = {};
+Qvocab.Models = {};
+Qvocab.Templates = window.JST; // rails template system
+Qvocab.Views = {};
+
+Qvocab.Globals.assetsPath = '<%= Rails.configuration.assets.prefix %>' + '/';
+Qvocab.Globals.Assets = {};
+Qvocab.Assets = Qvocab.Globals.Assets;
+Qvocab.Globals.env = '<%= Rails.env %>';
+Qvocab.Globals.contentElement = '[data-component="content"]';
+Qvocab.pusherKey = '<%= ENV["PUSHER_KEY"]%>'
+Qvocab.currentUser = {}
+Qvocab.starting = false
+
+Qvocab.Globals.apiPath = function(relativePath) {
+    var prefix = '/api/v1';
+
+    if (relativePath.charAt(relativePath.length) !== '/') { relativePath = relativePath + '/'; }
+
+    return relativePath.charAt(0) === '/' ? prefix + relativePath : prefix + '/' + relativePath;
+};

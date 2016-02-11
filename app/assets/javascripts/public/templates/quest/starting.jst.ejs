@@ -1,0 +1,36 @@
+<div class="home-panel">
+  <div class='js-point q-point'> +5 </div>
+  <div class="panel-heading text-center margin-top-60px height-60px js-panel-heading">
+    <button type="button" class="btn js-waiter-1 hidden btn-floating btn-success"> 1 </button>
+    <button type="button" class="btn js-waiter-2 hidden btn-floating btn-success"> 2 </i></button>
+    <button type="button" class="btn js-waiter-3 hidden btn-floating btn-success"> 3 </button>
+  </div>
+  <div class="panel-body container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="js-quest-wrap">
+        </div>
+        <div class="btn-group btn-group-quests js-numbers hidden">
+          <% _.each(quests, function(quest, index) { %>
+            <button type="button" data-number=<%= index %> class="js-number btn btn-outline btn-default"><%= index + 1 %></button>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='progress-group hidden js-progresses fadeIn animated'>
+    <div class="progress progress-sm">
+      <div class="progress-bar js-progress-user progress-bar-warning" role="progressbar">
+        <span class="progress-label">5 / 8</span>
+      </div>
+    </div>
+    <div class="progress progress-sm">
+      <div class="progress-bar js-progress-owner progress-bar-danger" role="progressbar">
+        
+      </div>
+    </div>
+  </div>
+  
+  <div class='clear'></div>
+</div>
