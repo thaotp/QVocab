@@ -7,7 +7,7 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :winner_id
       t.boolean :starting, default: false
 
-      t.timestamps null: false
+      t.timestamps
     end
   end
 end

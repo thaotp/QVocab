@@ -45,8 +45,8 @@ end
 
 gem 'haml'
 gem 'ejs'
-# gem 'pg'
-gem 'mysql2', '~> 0.3.20'
+gem 'pg'
+# gem 'mysql2', '~> 0.3.20'
 gem 'devise'
 gem "rolify"
 gem "gon"
