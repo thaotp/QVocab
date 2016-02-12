@@ -54,7 +54,7 @@ $(function() {
     initSelect: function(){
       var type = ''
       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-       type = 'mobile' 
+       type = 'mobile'
       }
       this.$('.selectpicker-course').selectpicker(type);
       this.$('.selectpicker-level').selectpicker(type);
@@ -67,9 +67,9 @@ $(function() {
         var messages = data.messages
         if(messages.id != Qvocab.currentUser.id && !Qvocab.starting){
           if(messages.is_online){
-            _this.startQ(messages.id);
+            _this.startQ(messages.id, messages.course, messages.level);
           }
-        } 
+        }
       });
     },
 
@@ -77,8 +77,8 @@ $(function() {
       var _this = this;
       Qvocab.channel.bind('start', function(data) {
         var messages = data.messages
-        console.log('admin')
-        Qvocab.cache.store('user:quests', messages.quests);
+        // Qvocab.cache.store('user:quests', messages.quests);
+        Qvocab.activeQuest = messages
         Qvocab.router.navigate('quest/starting', { trigger: true, replace: false });
       });
     },
@@ -94,7 +94,11 @@ $(function() {
     },
 
     pingQ: function(){
-      var req = this.ping({id: Qvocab.currentUser.id, ping: true})
+      var level = $('.js-level'). selectpicker('val')
+      var course = $('.js-course'). selectpicker('val')
+      if(level == "" || course == "") return;
+
+      var req = this.ping({id: Qvocab.currentUser.id, ping: true, level: level, course: course})
       req.always(function() { });
       req.done(_.bind(this.onPingSuccess, this));
       req.fail(_.bind(this.onPingError, this));
@@ -108,9 +112,10 @@ $(function() {
 
     },
 
-    startQ: function(){
-      console.log('startQ')
+    startQ: function(user_id, course, level){
+      var params = {user_id: user_id, id: Qvocab.currentUser.id, course: course, level: level}
       var req = $.ajax({
+        data: JSON.stringify(params),
         contentType: 'application/json',
         type: 'post',
         url: Qvocab.Globals.apiPath('start')

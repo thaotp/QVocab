@@ -2,17 +2,29 @@
   <div class="quest-panel fadeIn animated">
     <div class="panel-heading">
       <div class='quest-timer js-timer' id="timer"> </div>
-      <h4 class="panel-title">Heading With Desc Bottom
-        <span class="panel-desc">Panel Description Here..</span>
+      <h4 class="panel-title">
+        <%= quest.question %>
+        <span class="panel-desc font-bold-black">
+          <span class= <%= quest.rule == 2 ? 'hidden' : '' %> >
+            <%= quest.pron %>
+          </span>
+
+          <span class= <%= quest.rule == 1 ? 'hidden' : '' %> >
+            <%= quest.means %>
+          </span>
+        </span>
       </h4>
     </div>
     <div class="panel-body">
       <ul class="list-group margin-li-group list-group-bordered">
-        <li class="list-group-item js-answer btn-outline btn-raised" data-position=1 >
-        1. akjhdajshdkjahkdjhkajshdkahdjhaskdhahdkjhaskdjhkasjhdjkhakdhah</li>
-        <li class="list-group-item js-answer btn-outline btn-raised" data-position=2 >2. Dapibus ac facilisis in</li>
-        <li class="list-group-item js-answer btn-outline btn-raised" data-position=3 >3. Morbi leo risus</li>
-        <li class="list-group-item js-answer btn-outline btn-raised" data-position=4 >4. Disabled</li>
+        <% _.each(quest.anwsers, function(anwser, index) { %>
+          <li class="list-group-item js-answer btn-outline btn-raised" data-anwser= "<%= anwser %>" >
+            <%= index + 1%>.
+            <span class='font-bold-black'>
+              <%= anwser %>
+            </span>
+          </li>
+        <% }) %>
       </ul>
     </div>
   </div>

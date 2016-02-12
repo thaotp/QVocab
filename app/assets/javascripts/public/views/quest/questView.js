@@ -16,7 +16,7 @@ $(function() {
 
     initialize: function() {
       this.anwsered = false;
-      this.rightAnwser = Math.floor(Math.random() * 4) + 1
+      this.rightAnwser = ''
       this.listenToOnce(this, 'ready', _.bind(this.onReady, this));
       this.trigger('ready');
     },
@@ -36,7 +36,8 @@ $(function() {
 
     getContext: function() {
       var context = {};
-
+      context.quest = this.model.toJSON();
+      this.rightAnwser = context.quest.right_anwser
       context.Qvocab = Qvocab;
 
       return context;
@@ -54,9 +55,9 @@ $(function() {
         return;
       }
       this.anwsered = true;
-      var anwser = $(e.currentTarget).data('position')
+      var anwser = $(e.currentTarget).data('anwser')
       this.timer.conf.onEnd = null;
-      
+
       if(anwser == this.rightAnwser){
         this.$('.js-answer').removeClass('pulse animated')
         $(e.currentTarget).addClass('pulse animated')
@@ -91,6 +92,7 @@ $(function() {
     },
 
     onClose: function() {
+      this.timer.conf.onEnd = null;
       this.$el.remove();
       this.unbindEvents();
     }

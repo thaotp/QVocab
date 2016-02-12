@@ -25,15 +25,16 @@ $(function() {
 
     initialize: function() {
       var _this = this;
+
       this.listenTo(this, 'route', function (route, params) {
         routeStore.push(Backbone.history.fragment);
       });
 
       this.listenTo(Qvocab.state, 'change:loading', function() {
         if (Qvocab.state.get('loading')) {
-          
+
         } else {
-          
+
         }
       });
       this.htmlClasses = $('html').attr('class');
@@ -52,11 +53,21 @@ $(function() {
 
     // Called after the route function
     after: function(route) {
-      
+
     },
 
     authenticate: function() {
       // Authenticate is called after 'before' and if it returns false, the callstack ends.
+      var startingRoute = Backbone.history.fragment.match(/quest\/starting/i) != null
+      if(Qvocab.activeQuest.starting && !startingRoute){
+        this.navigate('quest/starting', true);
+        return false;
+      }
+
+      if(!Qvocab.activeQuest.starting && startingRoute){
+        this.navigate('/', true);
+        return false;
+      }
       return true;
     },
 

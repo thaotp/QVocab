@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_id: 1
+  user_id: 1
+  words_id: MyString
+  winner_id: 1
+  starting: false
+
+two:
+  owner_id: 1
+  user_id: 1
+  words_id: MyString
+  winner_id: 1
+  starting: false

@@ -58,9 +58,9 @@ $(function() {
         var messages = data.messages
         if(messages.id != Qvocab.currentUser.id && !Qvocab.starting){
           if(messages.ping){
-            _this.confirmQ();
+            _this.confirmQ(messages);
           }
-        } 
+        }
       });
     },
 
@@ -68,14 +68,15 @@ $(function() {
       var _this = this;
       Qvocab.channel.bind('start', function(data) {
         var messages = data.messages
-        Qvocab.cache.store('user:quests', messages.quests);
+        Qvocab.activeQuest = messages
+        // Qvocab.cache.store('user:quests', messages.quests);
         Qvocab.router.navigate('quest/starting', { trigger: true, replace: false });
       });
     },
 
-    confirmQ: function(){
+    confirmQ: function(messages){
       var _this = this;
-      console.log('confirmQ')
+
       swal({
         title: "",
         text: "Accept the challenge ?",
@@ -90,7 +91,7 @@ $(function() {
       },
       function(isConfirm) {
         if (isConfirm) {
-          _this.ping({id: Qvocab.currentUser.id, is_online: true})
+          _this.ping({id: Qvocab.currentUser.id, is_online: true, course: messages.course, level: messages.level});
         } else {
           console.log('!isConfirm')
         }

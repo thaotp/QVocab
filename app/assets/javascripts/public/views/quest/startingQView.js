@@ -9,7 +9,7 @@ $(function() {
   Qvocab.Views.StartingQView = Backbone.View.extend({
 
     events: {
-      
+
     },
 
     template: Qvocab.Templates['public/templates/quest/starting'],
@@ -19,22 +19,24 @@ $(function() {
       this.positionQuest = 0;
       this.collectionQuestViews = []
       this.rightQ = 0;
+      this.rightQUser = 0;
       this.finishedQ = false;
       this.setElement(Qvocab.Globals.contentElement);
       this.listenToOnce(this, 'ready', _.bind(this.onReady, this));
-      
+
       var _this  = this;
-      this.collection = new Qvocab.Collections.Quests(Qvocab.cache.get('user:quests'))
-      console.log(Qvocab.cache.get('user:quests'))
-      if( !Qvocab.cache.get('user:quests') ) {
-        var req = this.collection.fetch();
-        Qvocab.cache.store('user:quests', this.collection);
-        req.done(function() {
-          _this.trigger('ready');
-        });
-      }else{
+      this.collection = new Qvocab.Collections.Quests()
+
+      var req = this.collection.fetch();
+      Qvocab.cache.store('user:quests', this.collection);
+      req.fail(function() {
+        Qvocab.activeQuest = {}
+        Qvocab.router.navigate('/', { trigger: true, replace: false });
+      });
+      req.done(function() {
         _this.trigger('ready');
-      }
+      });
+
     },
 
     onReady: function() {
@@ -72,7 +74,7 @@ $(function() {
     waitDisplay: function(){
       var _this = this;
       var count = 1;
-      var timer = setInterval(function(e){
+      this.waitTimer = setInterval(function(e){
         switch(count) {
         case 1:
           _this.showWaiter(count)
@@ -88,7 +90,7 @@ $(function() {
           break;
         case 4:
           _this.showWaiter(count)
-          clearInterval(timer);
+          clearInterval(_this.waitTimer);
           break;
         default:
           break;
@@ -118,7 +120,8 @@ $(function() {
 
     nextQuest: function(isAnwser){
       this.anwserQ(isAnwser);
-      this.currentQuestView.close();
+      // console.log(this.currentQuestView)
+      this.removeQuestView();
       this.positionQuest++
       var model = this.getModelNextQuest(this.positionQuest);
       this.currentQuestView = this.initQuestView(model);
@@ -144,15 +147,12 @@ $(function() {
     },
 
     finishQuest: function(){
-      console.log('finishQuest')
       this.$('.js-point').addClass('hidden')
-      // var params = {right_answer: this.rightQ, current_anwser: this.positionQuest + 1, user_id: Qvocab.currentUser.id, finished: true}
-      // this.aJaxTo(params)
     },
 
     anwserQ:function(isAnwser){
       isAnwser ? this.rightAnwser() : this.wrongAnwser();
-      var params = {right_answer: this.rightQ, current_anwser: this.positionQuest + 1, user_id: Qvocab.currentUser.id}
+      var params = {quest_id: Qvocab.activeQuest.id, right_answer: this.rightQ, current_anwser: this.positionQuest + 1, user_id: Qvocab.currentUser.id}
       this.aJaxTo(params);
     },
 
@@ -171,14 +171,12 @@ $(function() {
       this.displayPoint(true)
       ++this.rightQ
       this.qProgressOwner()
-      console.log('rightAnwser')
     },
 
     wrongAnwser: function(){
       this.qNumber(false)
       this.displayPoint(false)
       this.qProgressOwner()
-      console.log('wrongAnwser')
     },
 
     qNumber: function(setColor){
@@ -198,7 +196,7 @@ $(function() {
       setTimeout(function(){
         this.$('.q-point').removeClass('fadeOut animated').removeClass('true false')
       }, 800)
-      
+
       if(isAnwser){
         this.$('.q-point').html("+5")
         this.$('.q-point').addClass('true')
@@ -211,13 +209,14 @@ $(function() {
 
     qProgress: function(qClass, currentAnwser){
       var total = this.$(qClass).parent().width();
-      var current = this.$(qClass).width();
 
-      var alpha = 100 / this.collection.length * total / 100
+      var alpha = total / this.collection.length
+      var current = currentAnwser * alpha;
+
       if(currentAnwser == this.collection.length){
         this.$(qClass).width('100%')
       }else{
-        this.$(qClass).width(current + alpha)
+        this.$(qClass).width(current)
       }
     },
 
@@ -228,6 +227,8 @@ $(function() {
 
     qProgressUser: function(user){
       this.qProgress('.js-progress-user', user.current_anwser);
+      this.rightQUser = user.right_answer;
+
       this.$('.js-progress-user').html(user.right_answer + '/' + user.current_anwser)
     },
 
@@ -235,24 +236,81 @@ $(function() {
       var _this = this;
       Qvocab.channel.bind('anwser', function(data) {
         var messages = data.messages
+        var yourself = (messages.user_id != Qvocab.currentUser.id) ? false : true
+        if(!yourself){
+          _this.qProgressUser(messages)
+        }
+
         if(messages.finished){
-          if(messages.user_id != Qvocab.currentUser.id){
-            // console.log('finished',messages)
-            // _this.currentQuestView.close();
-          }
+          Qvocab.activeQuest = {};
           if(_this.currentQuestView){
             _this.currentQuestView.close();
+            if (typeof this.currentView !== 'undefined') {
+              this.currentView.close();
+              delete this.currentView;
+            }
           }
           _this.finishedQ = true
-        }
-        if(messages.user_id != Qvocab.currentUser.id){
-          _this.qProgressUser(messages)
+          _this.getResult(yourself);
         }
       });
     },
 
+    getResult: function(yourself){
+      if(this.rightQ > this.rightQUser){
+        this.yourWinner();
+      }else if(this.rightQ < this.rightQUser){
+        this.yourLoser();
+      }else{
+        yourself ? this.yourLoser() : this.yourWinner();
+      }
+    },
+
+    yourWinner: function(){
+      swal({
+        title: "Great!",
+        text: "You are winner.",
+        imageUrl: Qvocab.Globals.Assets['winner.png']
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          Qvocab.router.navigate('/', { trigger: true, replace: false });
+        } else {
+
+        }
+      });
+    },
+
+    yourLoser: function(){
+      swal({
+        title: "Stupid!",
+        text: "You are loser.",
+        imageUrl: Qvocab.Globals.Assets['loser.png']
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          Qvocab.router.navigate('/', { trigger: true, replace: false });
+        } else {
+
+        }
+      });
+    },
+
+    removeQuestView: function(){
+      if(this.currentQuestView != null){
+        this.currentQuestView.timer.conf.onEnd = null;
+        this.currentQuestView.close();
+      }
+      this.currentQuestView = null;
+    },
+
     onClose: function() {
+      if (typeof this.waitTimer !== 'undefined') {
+        clearInterval(this.waitTimer);
+        delete this.waitTimer;
+      }
       this.unbindEvents();
+      this.removeQuestView();
     }
 
   });

@@ -32,7 +32,7 @@ $(function() {
     }
   });
 
-  
+
   Backbone.View.prototype.close = function(opts) {
     opts = opts ? opts : {};
     opts = _.extend({

@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131033350) do
+ActiveRecord::Schema.define(version: 20160211105136) do
+
+  create_table "quests", force: :cascade do |t|
+    t.integer  "owner_id",    limit: 4
+    t.integer  "user_id",     limit: 4
+    t.string   "words_id",    limit: 255
+    t.integer  "winner_id",   limit: 4
+    t.boolean  "starting",    limit: 1,   default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "course",      limit: 255
+    t.string   "level",       limit: 255
+    t.integer  "word_number", limit: 4,   default: 0
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",          limit: 255

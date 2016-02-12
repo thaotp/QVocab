@@ -31,13 +31,15 @@
       id: '<%= current_user.id %>',
       isAdmin: <%= current_user.admin? %>
     };
+
+    Qvocab.activeQuest = <%= Quest.active(current_user.id).present? ? raw(Quest.active(current_user.id).last.to_json) : {}  %>;
     <% else %>
     Qvocab.currentUser = {
       id: -1,
-      isActive: false
+      isActive: false,
     };
     <% end %>
-  
+
     Qvocab.events.trigger('appLoaded');
   });
 </script>

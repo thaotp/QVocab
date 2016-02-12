@@ -17,13 +17,17 @@ Qvocab.Templates = window.JST; // rails template system
 Qvocab.Views = {};
 
 Qvocab.Globals.assetsPath = '<%= Rails.configuration.assets.prefix %>' + '/';
-Qvocab.Globals.Assets = {};
+Qvocab.Globals.Assets = {
+  'loser.png': '<%= asset_path("loser.png") %>',
+  'winner.png': '<%= asset_path("winner.png") %>'
+};
 Qvocab.Assets = Qvocab.Globals.Assets;
 Qvocab.Globals.env = '<%= Rails.env %>';
 Qvocab.Globals.contentElement = '[data-component="content"]';
 Qvocab.pusherKey = '<%= ENV["PUSHER_KEY"]%>'
 Qvocab.currentUser = {}
 Qvocab.starting = false
+Qvocab.wordNumber = <%= WORD_NUMBER %>
 
 Qvocab.Globals.apiPath = function(relativePath) {
     var prefix = '/api/v1';
@@ -32,3 +36,4 @@ Qvocab.Globals.apiPath = function(relativePath) {
 
     return relativePath.charAt(0) === '/' ? prefix + relativePath : prefix + '/' + relativePath;
 };
+Qvocab.activeQuest = {}
