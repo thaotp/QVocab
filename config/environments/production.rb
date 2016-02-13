@@ -77,3 +77,11 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
+
+
+require 'pusher'
+
+Pusher.app_id = ENV['PUSHER_ID']
+Pusher.key = ENV['PUSHER_KEY']
+Pusher.secret = ENV['PUSHER_SECRET']
+Pusher.logger = Rails.logger
