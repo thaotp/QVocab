@@ -1,4 +1,7 @@
 class Word < ActiveRecord::Base
+  # Audio uploader using carrierwave
+  mount_uploader :audio, AudioUploader
+
   VERB = "verb"
 
   def take_quest(rule, words)

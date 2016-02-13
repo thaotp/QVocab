@@ -52,3 +52,9 @@ gem "rolify"
 gem "gon"
 gem 'pusher'
 
+# for aws cloud storage
+gem 'fog'
+# photo resizing
+gem "mini_magick"
+# file upload solution
+gem 'carrierwave'

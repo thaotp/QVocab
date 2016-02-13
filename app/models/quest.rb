@@ -10,7 +10,6 @@ class Quest < ActiveRecord::Base
 
   def take_quests
     # words = Word.where(note: self.course).offset(self.level.to_i).limit(self.word_number)
-    p self
     words = Word.where(main: true).take(self.word_number)
     means = Word.where.not(means: "").pluck(:means)
     names = Word.where(main: true).pluck(:name)
