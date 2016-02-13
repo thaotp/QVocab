@@ -12,13 +12,15 @@
           <span class= <%= quest.rule == 1 ? 'hidden' : '' %> >
             <%= quest.means %>
           </span>
+          -
+          <%= quest.gender %>
         </span>
       </h4>
     </div>
     <div class="panel-body">
       <ul class="list-group margin-li-group list-group-bordered">
         <% _.each(quest.anwsers, function(anwser, index) { %>
-          <li class="list-group-item js-answer btn-outline btn-raised" data-anwser= "<%= anwser %>" >
+          <li class="list-group-item js-answer btn-outline btn-raised" data-answer= '<%= anwser %>' >
             <%= index + 1%>.
             <span class='font-bold-black'>
               <%= anwser %>

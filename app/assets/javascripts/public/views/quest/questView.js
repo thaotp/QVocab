@@ -55,8 +55,10 @@ $(function() {
         return;
       }
       this.anwsered = true;
-      var anwser = $(e.currentTarget).data('anwser')
+      var anwser = $(e.currentTarget).data('answer')
       this.timer.conf.onEnd = null;
+      var $fieldRight = this.$('.js-answer[data-answer="'+ this.rightAnwser +'"]')
+      $fieldRight.addClass('true')
 
       if(anwser == this.rightAnwser){
         this.$('.js-answer').removeClass('pulse animated')
@@ -66,7 +68,7 @@ $(function() {
         }, 1000);
       }else{
         this.$('.js-answer').removeClass('shake animated')
-        $(e.currentTarget).addClass('shake animated')
+        $(e.currentTarget).addClass('shake animated wrong')
         setTimeout(function(){
           Qvocab.events.trigger('end:quest', false);
         }, 1200);

@@ -1,5 +1,5 @@
 .body{
-  overflow-y: hidden;
+
 }
 .image-wrap{
   padding-top: 50px;
@@ -23,9 +23,24 @@
 .margin-li-group{
   & > li{
     margin-bottom: 10px;
-    border-color: #62a8ea !important;
     text-align: left;
     word-break: break-all;
+    &.wrong{
+      border-color: #F96868 !important;
+      background-color: #F96868 !important;
+      color: white !important;
+      .font-bold-black{
+        color: white;
+      }
+    }
+    &.true{
+      border-color: #3583CA !important;
+      background-color: #3583CA !important;
+      color: white !important;
+      .font-bold-black{
+        color: white;
+      }
+    }
   }
 }
 
