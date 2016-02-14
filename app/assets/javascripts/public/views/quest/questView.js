@@ -45,8 +45,13 @@ $(function() {
 
     render: function() {
       this.$el.html(this.template(this.getContext()));
-
       return this;
+    },
+
+    playVoice: function(force){
+      if(this.model.get('rule') == 1 || force){
+        responsiveVoice.speak(this.model.get('name'));
+      }
     },
 
     answerQuest: function(e){
@@ -73,6 +78,7 @@ $(function() {
           Qvocab.events.trigger('end:quest', false);
         }, 1200);
       }
+      this.playVoice(true);
     },
 
     timerStart: function(e){

@@ -137,6 +137,7 @@ $(function() {
       });
       this.$('.js-quest-wrap').append(questView.render().el);
       questView.timerStart();
+      questView.playVoice();
       this.collectionQuestViews.push(questView);
       this.qNumber();
       return questView;

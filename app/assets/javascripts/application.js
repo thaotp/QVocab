@@ -23,6 +23,7 @@
 //= require progressjs.min
 //= require countdown.min
 //= require sweet-alert.min
+//= require responsivevoice
 
 // Templates
 //= require_tree ./public/templates
