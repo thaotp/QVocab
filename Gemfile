@@ -58,3 +58,6 @@ gem 'fog'
 gem "mini_magick"
 # file upload solution
 gem 'carrierwave'
+gem 'rest-client'
+gem 'nokogiri'
+gem 'mechanize'

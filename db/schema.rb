@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160213091007) do
+ActiveRecord::Schema.define(version: 20160215140631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,21 @@ ActiveRecord::Schema.define(version: 20160213091007) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+
+  create_table "word_by_words", force: :cascade do |t|
+    t.string   "name"
+    t.string   "gender"
+    t.string   "means"
+    t.text     "pron"
+    t.text     "define"
+    t.string   "examp"
+    t.string   "text"
+    t.text     "note"
+    t.string   "family_word"
+    t.string   "audio"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "words", force: :cascade do |t|
     t.string   "name"

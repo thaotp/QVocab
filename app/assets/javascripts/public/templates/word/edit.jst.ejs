@@ -1,0 +1,14 @@
+<h4 class="word-title"><%= word.name %></h4>
+<h5> <%= word.pron %> </h4>
+<div class="word">
+  <form class="form-inline">
+    <div class="form-group">
+      <label class="sr-only" for="inputWord"></label>
+      <input type="text" class="form-control js-means" id="inputWord" autofocus="autofocus" placeholder="Means"  value="<%= word.means %>" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="js-submit btn btn-primary btn-outline">Submit</button>
+    </div>
+  </form>
+</div>

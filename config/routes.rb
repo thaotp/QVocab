@@ -58,10 +58,17 @@ Rails.application.routes.draw do
 
   get '/quest/new' => 'home#public'
   get '/quest/starting' => 'home#public'
+  get '/words' => 'home#public'
+  get '/words/create' => 'home#public'
+
   scope "/api/v1" do
     post '/ping', to: 'quest#ping', :defaults => { :format => 'json' }
     post '/start', to: 'quest#start', :defaults => { :format => 'json' }
     get '/quests', to: 'quest#quests', :defaults => { :format => 'json' }
     post '/anwser', to: 'quest#anwser', :defaults => { :format => 'json' }
+
+    resources :words, :defaults => { :format => 'json' } do
+      get 'generate', on: :collection
+    end
   end
 end

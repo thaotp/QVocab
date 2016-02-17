@@ -21,6 +21,10 @@ $(function() {
       'quest/new': 'newQRoute',
       'quest/starting': 'startingQRoute',
       'quest/starting/': 'startingQRoute',
+      'words': 'wordsView',
+      'words/': 'wordsView',
+      'words/create': 'createWordsView',
+      'words/create/': 'createWordsView',
     },
 
     initialize: function() {
@@ -97,6 +101,14 @@ $(function() {
 
     startingQRoute: function(){
       this.currentView = new Qvocab.Views.StartingQView();
+    },
+
+    wordsView: function(){
+      this.currentView = new Qvocab.Views.WordsView();
+    },
+
+    createWordsView: function(){
+      this.currentView = new Qvocab.Views.CreateWordView();
     },
 
     previousUrl: function() {
