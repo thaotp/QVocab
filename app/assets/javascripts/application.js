@@ -24,6 +24,7 @@
 //= require countdown.min
 //= require sweet-alert.min
 //= require responsivevoice
+//= require annyang
 
 // Templates
 //= require_tree ./public/templates

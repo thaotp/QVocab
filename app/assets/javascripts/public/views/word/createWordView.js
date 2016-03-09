@@ -107,7 +107,7 @@ $(function() {
       });
 
       req.done(function(e) {
-        // $('.js-string').val('');
+        $('.js-string').val('');
         _this.$('.js-word-group:visible').remove();
         _this.stopG = false
       });

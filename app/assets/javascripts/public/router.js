@@ -24,7 +24,9 @@ $(function() {
       'words': 'wordsView',
       'words/': 'wordsView',
       'words/create': 'createWordsView',
-      'words/create/': 'createWordsView',
+      'words/create/?:review': 'createWordsView',
+      'practise/speak':'speakWordView',
+      'practise/speak/':'speakWordView',
     },
 
     initialize: function() {
@@ -103,12 +105,24 @@ $(function() {
       this.currentView = new Qvocab.Views.StartingQView();
     },
 
-    wordsView: function(){
-      this.currentView = new Qvocab.Views.WordsView();
+    wordsView: function(params){
+      this.currentView = new Qvocab.Views.WordsView({
+        params: params
+      });
     },
 
     createWordsView: function(){
       this.currentView = new Qvocab.Views.CreateWordView();
+    },
+
+    reviewWordsView: function(){
+      this.currentView = new Qvocab.Views.ReviewWordsView();
+    },
+
+    speakWordView: function(params){
+      this.currentView = new Qvocab.Views.SpeakWordsView({
+        params: params
+      });
     },
 
     previousUrl: function() {

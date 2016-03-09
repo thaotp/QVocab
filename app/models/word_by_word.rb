@@ -1,5 +1,11 @@
 class WordByWord < ActiveRecord::Base
   require 'csv'
+  PER_PAGE = 2
+
+  scope :in_day, -> { where('created_at > ?', 24.hours.ago ) }
+  scope :moment, -> { where('created_at > ?', 1.hours.ago ) }
+  scope :means_empty, -> { where('means is NULL or means = ?', "") }
+  scope :had_means, -> { where('means is not NULL or means <> ?', "") }
 
   mount_uploader :audio, AudioUploader
 
@@ -28,8 +34,6 @@ class WordByWord < ActiveRecord::Base
     words.each do |word|
       word[:pron] = WordByWord.set_pron(word[:name])
     end
-
-    p words
 
     arr_obj = create(words) || []
     return if arr_obj.empty?

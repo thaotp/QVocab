@@ -56,8 +56,8 @@ $(function() {
       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
        type = 'mobile'
       }
-      this.$('.selectpicker-course').selectpicker(type);
-      this.$('.selectpicker-level').selectpicker(type);
+      this.$('.selectpicker-course').selectpicker();
+      this.$('.selectpicker-level').selectpicker();
     },
 
     subscribePing: function(){

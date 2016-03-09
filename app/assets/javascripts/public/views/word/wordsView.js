@@ -9,30 +9,33 @@ $(function() {
   Qvocab.Views.WordsView = Backbone.View.extend({
 
     events: {
-      'click .js-answer': 'answerWord',
+      'click .js-answer': 'answerWord'
     },
 
-    template: Qvocab.Templates['public/templates/word/index'],
+    template: Qvocab.Templates['public/templates/words/index'],
 
-    initialize: function() {
+    initialize: function(options) {
       this.setElement(Qvocab.Globals.contentElement);
       this.listenToOnce(this, 'ready', _.bind(this.onReady, this));
 
-      this.collection = new Qvocab.Collections.Words()
-      var req = this.collection.fetch();
-      var _this = this;
-      req.fail(function() {
-        console.log("fail")
-      });
 
-      req.done(function() {
-        _this.trigger('ready');
-      });
+      this.isReview = (!_.isUndefined(options.params) && options.params.type == "review")
+      this.isUpdate = (!_.isUndefined(options.params) && options.params.type == "update")
+
+      this.fetchCollection();
+
     },
 
     onReady: function() {
+
       this.render();
-      this.startWord();
+      this.listView = []
+      if(this.isReview || this.isUpdate ){
+        this.startWord();
+      }else{
+        this.listWord();
+      }
+
       this.bindEvents();
     },
 
@@ -56,6 +59,53 @@ $(function() {
       return this;
     },
 
+    ajaxCollection: function(){
+
+      var _this = this;
+      this.collection = new Qvocab.Collections.Words()
+
+      var req = $.ajax({
+        contentType: 'application/json',
+        type: 'get',
+        url: Qvocab.Globals.apiPath('words/review')
+      });
+
+
+      req.fail(function() {
+        console.log("fail")
+      });
+
+      req.done(function(e) {
+        _this.collection = new Qvocab.Collections.Words(e)
+        _this.trigger('ready');
+      });
+
+    },
+
+    fetchCollection: function(){
+
+      var _this = this;
+      var type = null;
+
+      if(this.isReview){
+        type = "review"
+      }else if(this.isUpdate){
+        type = "update"
+      }
+
+      this.collection = new Qvocab.Collections.Words();
+      var req = this.collection.fetch({ data: $.param({ type: type}) });
+
+      req.fail(function() {
+        console.log("fail")
+      });
+
+      req.done(function(e) {
+        _this.trigger('ready');
+      });
+
+    },
+
     startWord: function(){
       var model = this.collection.first();
       this.positionWord = 0;
@@ -74,17 +124,42 @@ $(function() {
 
     initWordView: function(model){
       if(_.isUndefined(model)){
+        if(this.isReview){
+          location.reload();
+          return;
+        }
         model = this.collection.first();
         this.positionWord = 0;
       }
 
-      var wordView = new Qvocab.Views.EditWordView({
+      var wordView = new Qvocab.Views.WordView({
         model: model
       });
-      this.$('.js-word-wrap').append(wordView.render().el);
+      if(this.isReview){
+        this.$('.js-word-wrap').append(wordView.renderReview().el);
+      }else if(this.isUpdate){
+        this.$('.js-word-wrap').append(wordView.renderUpdate().el);
+      }
+
+
       wordView.focusWord();
       wordView.speakWord();
       return wordView;
+    },
+
+    listWord: function(){
+      var _this = this;
+      _.each(this.collection.models, function(model){
+
+        var wordView = new Qvocab.Views.WordView({
+          model: model
+        });
+        _this.$('.js-word-wrap').append(wordView.render().el);
+        wordView.$el.css({
+         'display': 'inline-block'
+        });
+        _this.listView.push(wordView);
+      });
     },
 
     getModelNextWord: function(position){
@@ -92,6 +167,11 @@ $(function() {
     },
 
     onClose: function() {
+      _.each(this.listView, function(view){
+        view.close();
+      });
+      this.listView = [];
+
       this.unbindEvents();
     }
 

@@ -1,7 +1,24 @@
 class WordsController < ApplicationController
+  before_filter :authenticate_user!, except: [:index]
+
   def index
-    words = WordByWord.where(means: nil)
+    words = if(params[:type] == "review")
+      WordByWord.had_means.in_day.shuffle
+    elsif (params[:type] == "update")
+      WordByWord.means_empty.order(id: :desc)
+    else (params[:type] == "mobile")
+      page = params[:page].to_i
+      offset = (page - 1) * WordByWord::PER_PAGE
+      WordByWord.had_means.order(id: :desc).limit(WordByWord::PER_PAGE).offset(offset)
+    end
+
+    words = WordByWord.had_means.order(id: :desc) if words.blank?
+
     render json: words
+  end
+
+  def review
+
   end
 
   def update

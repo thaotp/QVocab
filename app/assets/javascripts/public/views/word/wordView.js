@@ -6,13 +6,18 @@ $(function() {
 
   'use strict';
 
-  Qvocab.Views.EditWordView = Backbone.View.extend({
+  Qvocab.Views.WordView = Backbone.View.extend({
 
     events: {
       'click .js-submit': 'insertWord',
+      'click .js-next': 'nextWord',
     },
 
-    template: Qvocab.Templates['public/templates/word/edit'],
+    tagName: 'article',
+
+    templateUpdate: Qvocab.Templates['public/templates/word/edit'],
+    templateReview: Qvocab.Templates['public/templates/word/review'],
+    template: Qvocab.Templates['public/templates/word/show'],
 
     initialize: function() {
 
@@ -44,6 +49,16 @@ $(function() {
       return this;
     },
 
+    renderReview: function(){
+      this.$el.html(this.templateReview(this.getContext()));
+      return this;
+    },
+
+    renderUpdate: function(){
+      this.$el.html(this.templateUpdate(this.getContext()));
+      return this;
+    },
+
     focusWord: function(){
       this.$('.js-means').focus();
     },
@@ -55,7 +70,11 @@ $(function() {
         this.model.set('means', value)
         this.model.save();
       }
+      Qvocab.events.trigger('next:word');
+    },
 
+    nextWord: function(e){
+      e.preventDefault();
       Qvocab.events.trigger('next:word');
     },
 

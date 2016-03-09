@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   get '/quest/starting' => 'home#public'
   get '/words' => 'home#public'
   get '/words/create' => 'home#public'
+  get '/practise/speak' => 'home#public'
 
   scope "/api/v1" do
     post '/ping', to: 'quest#ping', :defaults => { :format => 'json' }
@@ -69,6 +70,11 @@ Rails.application.routes.draw do
 
     resources :words, :defaults => { :format => 'json' } do
       get 'generate', on: :collection
+      get 'review', on: :collection
+    end
+
+    resources :sentences, :defaults => { :format => 'json' } do
+
     end
   end
 end
