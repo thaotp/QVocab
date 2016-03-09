@@ -6,6 +6,7 @@ namespace :word_by_word do
     word_by_words = []
     Dir["#{dir}/*"].sort_by(&File.method(:ctime)).each do |file|
       note =  file.split('/').last.split('-').first
+      next if WordByWord.exists?(note: note)
       csv_text = File.read(file)
       csv = CSV.parse(csv_text, :headers => false)
       csv.each do |row|
