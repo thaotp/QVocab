@@ -1,6 +1,6 @@
 class WordByWord < ActiveRecord::Base
   require 'csv'
-  PER_PAGE = 2
+  PER_PAGE = 50
 
   scope :in_day, -> { where('created_at > ?', 24.hours.ago ) }
   scope :moment, -> { where('created_at > ?', 1.hours.ago ) }
