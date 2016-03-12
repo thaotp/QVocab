@@ -1,8 +1,17 @@
 class Word < ActiveRecord::Base
+  scope :in_day, -> { where('created_at > ?', 24.hours.ago ) }
+  scope :moment, -> { where('created_at > ?', 1.hours.ago ) }
+  scope :means_empty, -> { where('means is NULL or means = ?', "") }
+  scope :had_means_and_main, -> { where('means is not NULL or means <> ?', "").where(main: true) }
+
   # Audio uploader using carrierwave
   mount_uploader :audio, AudioUploader
 
   VERB = "verb"
+
+  def self.had_means
+    had_means_and_main
+  end
 
   def take_quest(rule, words)
     case rule

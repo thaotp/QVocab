@@ -1,4 +1,4 @@
-<h4 class="word-title"><%= word.name %></h4>
+<h4 class="word-title"><%= word.id %>. <%= word.name %></h4>
 <h5> <%= word.pron %> </h5>
 <h5> <%= word.means %> </h5>
 <div class="word">
@@ -11,5 +11,17 @@
     <div class="form-group">
       <button type="submit" class="js-submit btn btn-primary btn-outline">Submit</button>
     </div>
+    <img src="<%= word.photo_url %>" class='word-show-photo js-current-photo' style="position: absolute;top: 20px;right: 50%;" >
   </form>
+  <div class="below-form">
+    <div style="margin-top: 10px; margin-bottom: 10px;">
+      <span>
+        URL:
+      </span>
+      <input type="text" style="width: 500px; display: inline-block" class="form-control js-photo" id="inputPhoto" value="<%= word.photo_url %>"/>
+    </div>
+    <div class='js-photos' style="margin-top: 100px;">
+
+    </div>
+  </div>
 </div>

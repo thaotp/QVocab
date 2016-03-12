@@ -6,6 +6,7 @@ class WordByWord < ActiveRecord::Base
   scope :moment, -> { where('created_at > ?', 1.hours.ago ) }
   scope :means_empty, -> { where('means is NULL or means = ?', "") }
   scope :had_means, -> { where('means is not NULL or means <> ?', "") }
+  scope :randomize, -> { order('random()') }
 
   mount_uploader :audio, AudioUploader
 
@@ -15,7 +16,6 @@ class WordByWord < ActiveRecord::Base
 
   def self.set_word string, note = ''
     if note.blank?
-      p 'missing note'
       return;
     end
 

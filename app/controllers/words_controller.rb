@@ -2,17 +2,19 @@ class WordsController < ApplicationController
   before_filter :authenticate_user!, except: [:index]
 
   def index
+    klass = params[:model].classify.constantize if params[:model].present?
+    klass ||= "WordByWord".classify.constantize
     words = if(params[:type] == "review")
-      WordByWord.had_means.in_day.shuffle
+      klass.had_means.in_day.shuffle
     elsif (params[:type] == "update")
-      WordByWord.means_empty.order(id: :desc)
-    else (params[:type] == "mobile")
+      klass.means_empty.order(id: :desc)
+    elsif (params[:type] == "mobile")
       page = params[:page].to_i
       offset = (page - 1) * WordByWord::PER_PAGE
-      WordByWord.had_means.order(id: :desc).limit(WordByWord::PER_PAGE).offset(offset)
+      klass.had_means.order(id: :desc).limit(WordByWord::PER_PAGE).offset(offset).shuffle
     end
 
-    words = WordByWord.had_means.order(id: :desc) if words.blank?
+    words = klass.had_means.order(id: :desc) if words.blank?
 
     render json: words
   end
@@ -29,7 +31,7 @@ class WordsController < ApplicationController
 
   def generate
     string = params[:string]
-    arr = string.gsub("\n", '').gsub(".", '').gsub("/", '0').split('0').map(&:strip).reject(&:empty?)
+    arr = string.gsub("\n", '').gsub(".", '').gsub(/\d+/, '0').gsub("/", '0').split('0').map(&:strip).reject(&:empty?)
     render json: {names: arr}
   end
 
@@ -44,6 +46,6 @@ class WordsController < ApplicationController
 
   private
   def params_word
-    params.permit(:means)
+    params.permit(:means, :photo_url)
   end
 end

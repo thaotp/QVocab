@@ -21,6 +21,7 @@ $(function() {
 
       this.isReview = (!_.isUndefined(options.params) && options.params.type == "review")
       this.isUpdate = (!_.isUndefined(options.params) && options.params.type == "update")
+      this.modelName = !_.isUndefined(options.params) ? options.params.model : ""
 
       this.fetchCollection();
 
@@ -94,7 +95,7 @@ $(function() {
       }
 
       this.collection = new Qvocab.Collections.Words();
-      var req = this.collection.fetch({ data: $.param({ type: type}) });
+      var req = this.collection.fetch({ data: $.param({ type: type, model: _this.modelName })});
 
       req.fail(function() {
         console.log("fail")
@@ -144,6 +145,7 @@ $(function() {
 
       wordView.focusWord();
       wordView.speakWord();
+      wordView.loadPhotos();
       return wordView;
     },
 
