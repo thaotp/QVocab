@@ -48,7 +48,10 @@ class WordsController < ApplicationController
   def sync
     if Rails.env.production?
       words = eval(params[:words])
-      WordByWord.create(words)
+      words.each do |attr_w|
+        word = WordByWord.find_or_create_by(name: attr_w["name"])
+        word.update(attr_w)
+      end
     end
     render json: {}, status: 201
   end

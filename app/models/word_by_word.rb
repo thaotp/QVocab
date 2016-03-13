@@ -113,7 +113,7 @@ class WordByWord < ActiveRecord::Base
   end
 
   def self.sync
-    params = {words: self.in_day.to_a.map(&:to_hash).to_s}
+    params = {words: self.all.to_a.map(&:to_hash).to_s}
     RestClient.put 'https://qvocab.herokuapp.com/api/v1/words/sync', params
   end
 end
