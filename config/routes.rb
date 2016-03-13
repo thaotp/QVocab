@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     resources :words, :defaults => { :format => 'json' } do
       get 'generate', on: :collection
       get 'review', on: :collection
+      put 'sync', on: :collection
     end
 
     resources :sentences, :defaults => { :format => 'json' } do

@@ -1,5 +1,6 @@
 class WordsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index]
+  before_filter :authenticate_user!, except: [:index, :sync]
+  skip_before_filter :verify_authenticity_token, only: [:sync]
 
   def index
     klass = params[:model].classify.constantize if params[:model].present?
@@ -42,6 +43,14 @@ class WordsController < ApplicationController
     end
     status = WordByWord.save_words(words) ? 201 : 500
     render json: {}, status: status
+  end
+
+  def sync
+    if Rails.env.production?
+      words = eval(params[:words])
+      WordByWord.create(words)
+    end
+    render json: {}, status: 201
   end
 
   private
