@@ -108,12 +108,12 @@ class WordByWord < ActiveRecord::Base
     end
   end
 
-  def serializable_hash
-    super(except: [:id, :created_at, :audio, :updated_at])
+  def to_hash
+    serializable_hash(except: [:id, :created_at, :audio, :updated_at])
   end
 
   def self.sync
-    params = {words: self.take(5).to_a.map(&:serializable_hash).to_s}
+    params = {words: self.in_day.to_a.map(&:to_hash).to_s}
     RestClient.put 'https://qvocab.herokuapp.com/api/v1/words/sync', params
   end
 end
