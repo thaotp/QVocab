@@ -61,12 +61,19 @@ Rails.application.routes.draw do
   get '/words' => 'home#public'
   get '/words/create' => 'home#public'
   get '/practise/speak' => 'home#public'
+  get '/manage'  => 'home#public'
+
+  get '/manage/note_csv' => "manage#note_csv", defaults: { format: 'csv' }
 
   scope "/api/v1" do
     post '/ping', to: 'quest#ping', :defaults => { :format => 'json' }
     post '/start', to: 'quest#start', :defaults => { :format => 'json' }
     get '/quests', to: 'quest#quests', :defaults => { :format => 'json' }
     post '/anwser', to: 'quest#anwser', :defaults => { :format => 'json' }
+
+    resources :manage, :defaults => { :format => 'json' } do
+
+    end
 
     resources :words, :defaults => { :format => 'json' } do
       get 'generate', on: :collection

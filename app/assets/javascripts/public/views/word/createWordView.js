@@ -81,6 +81,8 @@ $(function() {
 
     createWords: function(e){
       e.preventDefault();
+      if(_.isEmpty(this.$('.js-note').val())) return;
+
       var _this = this;
       var values = []
       $('.js-word-group').find('input:visible').each(function(index, el) {

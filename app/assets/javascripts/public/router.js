@@ -27,6 +27,8 @@ $(function() {
       'words/create/?:review': 'createWordsView',
       'practise/speak':'speakWordView',
       'practise/speak/':'speakWordView',
+      'manage':'manageView',
+      'manage/':'manageView'
     },
 
     initialize: function() {
@@ -123,6 +125,10 @@ $(function() {
       this.currentView = new Qvocab.Views.SpeakWordsView({
         params: params
       });
+    },
+
+    manageView: function(){
+      this.currentView = new Qvocab.Views.ManageView();
     },
 
     previousUrl: function() {

@@ -1,0 +1,32 @@
+<div class='page-content'>
+  <div class="panel">
+    <div class="panel-body container-fluid">
+      <div class="row row-lg">
+        <div class="col-sm-12 col-md-6">
+          <div class="manage-wrap">
+            <h4 class="manage-title">----------</h4>
+            <div class="manage">
+              <form class="form-horizontal" action="/manage/note_csv" target="_blank">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">List note: </label>
+                  <div class="col-sm-9">
+                    <select name="note" class="js-select-note form-control input-lg">
+                      <% _.each(listNote, function(note) { %>
+                        <option value="<%= note %>" ><%= note %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-9 col-sm-offset-3">
+                    <button type="submit" class="js-download btn btn-primary">Download </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

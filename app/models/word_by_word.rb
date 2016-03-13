@@ -73,6 +73,15 @@ class WordByWord < ActiveRecord::Base
     p "Done ..."
   end
 
+  def self.as_csv
+    column_names = [:name, :means, :pron]
+    CSV.generate do |csv|
+      all.each do |word|
+        csv << word.attributes.values_at(*column_names.map(&:to_s))
+      end
+    end
+  end
+
   def self.download_audio words
     agent = Mechanize.new
     folder = "/Users/THAO-NUS/Dropbox/Job/ShowVocal/audio"
