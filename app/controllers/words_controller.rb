@@ -1,6 +1,6 @@
 class WordsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :sync]
-  skip_before_filter :verify_authenticity_token, only: [:sync]
+  before_filter :authenticate_user!, except: [:index, :sync, :init]
+  skip_before_filter :verify_authenticity_token, only: [:sync,:init]
 
   def index
     klass = params[:model].classify.constantize if params[:model].present?
@@ -45,6 +45,11 @@ class WordsController < ApplicationController
     render json: {}, status: status
   end
 
+  def init
+    status = ReadWord.save_words(params_read_word) ? 201 : 500
+    render json: {}, status: status
+  end
+
   def sync
     if Rails.env.production?
       words = eval(params[:words])
@@ -57,6 +62,10 @@ class WordsController < ApplicationController
   end
 
   private
+  def params_read_word
+    params.require(:word).permit(:name, :page_url)
+  end
+
   def params_word
     params.permit(:means, :photo_url)
   end

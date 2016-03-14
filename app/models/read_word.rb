@@ -1,4 +1,4 @@
-class WordByWord < WordCommon
+class ReadWord < WordCommon
   PER_PAGE = 50
 
   scope :in_day, -> { where('created_at > ?', 24.hours.ago ) }
@@ -10,5 +10,13 @@ class WordByWord < WordCommon
   mount_uploader :audio, AudioUploader
 
   validates_uniqueness_of :name
+
+  # Override
+  def self.save_words word
+    word[:pron] = self.set_pron(word[:name])
+
+    obj = create(word) || nil
+    obj.present? ? true : false
+  end
 
 end

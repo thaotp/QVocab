@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  gender: MyString
+  means: MyString
+  pron: MyText
+  define: MyText
+  examp: MyString
+  text: MyString
+  note: MyText
+  family_word: MyString
+  audio: MyString
+  photo_url: MyText
+
+two:
+  name: MyString
+  gender: MyString
+  means: MyString
+  pron: MyText
+  define: MyText
+  examp: MyString
+  text: MyString
+  note: MyText
+  family_word: MyString
+  audio: MyString
+  photo_url: MyText

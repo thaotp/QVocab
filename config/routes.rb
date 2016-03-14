@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       get 'generate', on: :collection
       get 'review', on: :collection
       put 'sync', on: :collection
+      post 'init', on: :collection
     end
 
     resources :sentences, :defaults => { :format => 'json' } do
