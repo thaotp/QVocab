@@ -2,7 +2,7 @@ class Word < ActiveRecord::Base
   scope :in_day, -> { where('created_at > ?', 24.hours.ago ) }
   scope :moment, -> { where('created_at > ?', 1.hours.ago ) }
   scope :means_empty, -> { where('means is NULL or means = ?', "") }
-  scope :had_means_and_main, -> { where('means is not NULL or means <> ?', "").where(main: true) }
+  scope :had_means_and_main, -> { where('means is not NULL or means <> ?', "").where(main: true).where(note: "4000 Essential English Words 1")}
 
   # Audio uploader using carrierwave
   mount_uploader :audio, AudioUploader
